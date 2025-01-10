@@ -8,7 +8,7 @@ def czy_wygralem(p):
 
 # random.seed(11)
 # Przykład użycia
-p = 0.08  # Prawdopodobieństwo sukcesu
+p = 0.08  # Początkowe prawdopodobieństwo sukcesu
 sukces = 0
 def losuj():
     try:
@@ -37,6 +37,7 @@ label = tk.Label(frame, text="Prawdopodobieństwo (0-1):")
 label.pack(side=tk.LEFT)
 
 entry = tk.Entry(frame)
+entry.insert(0, p)
 entry.pack(side=tk.LEFT)
 
 button = tk.Button(frame, text="Losuj", command=losuj)
