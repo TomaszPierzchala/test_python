@@ -26,7 +26,7 @@ jobs:
         run: |
             gh release delete v1.0.0 -y || true
             env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         uses: actions/create-release@v1
         env:
