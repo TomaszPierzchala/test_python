@@ -9,7 +9,16 @@ permissions:
   contents: write
 
 jobs:
+  delete-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete existing release
+        run: gh release delete v1.0.0 -y || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-windows:
+    needs: delete-release
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,11 +30,6 @@ jobs:
         run: pip install pyinstaller
       - name: Build executable
         run: pyinstaller --onefile losuj.py
-      - name: Delete existing release
-        if: always()
-        run: gh release delete v1.0.0 -y || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -50,6 +54,7 @@ jobs:
           asset_content_type: application/octet-stream
 
   build-macos:
+    needs: delete-release
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -61,11 +66,6 @@ jobs:
         run: pip install pyinstaller
       - name: Build executable
         run: pyinstaller --onefile losuj.py
-      - name: Delete existing release
-        if: always()
-        run: gh release delete v1.0.0 -y || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
