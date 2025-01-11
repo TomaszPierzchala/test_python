@@ -12,6 +12,7 @@ jobs:
   delete-release:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Delete existing release
         run: gh release delete v1.0.0 -y || true
         env:
