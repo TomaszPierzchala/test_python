@@ -21,11 +21,12 @@ jobs:
         run: pip install pyinstaller
       - name: Build executable
         run: pyinstaller --onefile losuj.py
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: losuj_executable
-          path: dist/losuj.exe
+      - name: Delete existing release
+        if: always()
+        run: |
+            gh release delete v1.0.0 -y || true
+            env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         uses: actions/create-release@v1
         env:
