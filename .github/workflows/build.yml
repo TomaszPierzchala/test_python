@@ -43,7 +43,7 @@ jobs:
           body: "Release of losuj executable."
 
   build-windows:
-    needs: create-release
+    needs: [create-release]
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -66,7 +66,7 @@ jobs:
           asset_content_type: application/octet-stream
 
   build-macos:
-    needs: create-release
+    needs: [create-release]
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
