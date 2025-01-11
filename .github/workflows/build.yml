@@ -41,7 +41,7 @@ jobs:
           prerelease: false
           body: "Release of losuj executable."
       - name: Set output
-        run: echo "upload_url={value}" >> $GITHUB_OUTPUT
+        run: echo "{name}={value}" >> $GITHUB_OUTPUT
   
 
   build-windows:
