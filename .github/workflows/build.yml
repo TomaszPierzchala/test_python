@@ -23,10 +23,9 @@ jobs:
         run: pyinstaller --onefile losuj.py
       - name: Delete existing release
         if: always()
-        run: |
-            gh release delete v1.0.0 -y || true
-            env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release delete v1.0.0 -y || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         uses: actions/create-release@v1
         env:
