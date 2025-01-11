@@ -11,17 +11,22 @@ permissions:
 jobs:
   delete-release:
     runs-on: ubuntu-latest
-    if: github.run_id == github.event.workflow_run.id
+    outputs:
+      deleteIt: ${{ steps.set-output.outputs.deleteIt }}
     steps:
       - uses: actions/checkout@v2
       - name: Delete existing release
         run: gh release delete v1.0.0 -y || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set output
+        id: set-output
+        run: echo "deleteIt=false" >> $GITHUB_OUTPUT
 
   create-release:
     needs: delete-release
     runs-on: ubuntu-latest
+    if: ${{ needs.delete-release.outputs.deleteIt == 'false' }}
     steps:
       - uses: actions/checkout@v2
       - name: Create Release
