@@ -26,7 +26,8 @@ jobs:
   create-release:
     needs: delete-release
     runs-on: ubuntu-latest
-    if: ${{ needs.delete-release.outputs.deleteIt == 'false' }}
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - uses: actions/checkout@v2
       - name: Create Release
@@ -40,9 +41,6 @@ jobs:
           draft: false
           prerelease: false
           body: "Release of losuj executable."
-      - name: Set output
-        run: echo "{name}={value}" >> $GITHUB_OUTPUT
-  
 
   build-windows:
     needs: create-release
@@ -62,7 +60,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: dist/losuj.exe
           asset_name: losuj.exe
           asset_content_type: application/octet-stream
@@ -85,7 +83,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: dist/losuj
           asset_name: losuj_macos
           asset_content_type: application/octet-stream
