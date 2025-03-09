@@ -30,6 +30,14 @@ jobs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - uses: actions/checkout@v2
+      - name: Delete existing tag
+        run: |
+          git tag -d v1.0.0 || true
+          git push origin :refs/tags/v1.0.0 || true
+      - name: Create new tag
+        run: |
+          git tag v1.0.0
+          git push origin v1.0.0
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
